@@ -1,0 +1,108 @@
+
+erDiagram
+    CLIENTES ||--o{ PEDIDOS : realiza
+    VENDEDORES ||--o{ PRODUTOS : anuncia
+    PRODUTOS ||--|| ESTOQUE : possui
+    PRODUTOS ||--o{ PRODUTO_CATEGORIA : pertence
+    CATEGORIAS ||--o{ PRODUTO_CATEGORIA : classifica
+    CATEGORIAS o|--o{ CATEGORIAS : possui
+    PEDIDOS ||--|{ ITENS_PEDIDO : contem
+    PRODUTOS ||--o{ ITENS_PEDIDO : integra
+    PEDIDOS ||--o| PAGAMENTOS : possui
+    PAGAMENTOS ||--o| PAGAMENTO_CARTAO : especializa
+    PAGAMENTOS ||--o| PAGAMENTO_PIX : especializa
+    CLIENTES ||--o{ AVALIACOES : escreve
+    PRODUTOS ||--o{ AVALIACOES : recebe
+
+    CLIENTES {
+        int id_cliente PK
+        varchar nome
+        varchar email UK
+        varchar telefone
+        varchar endereco
+        timestamp data_cadastro
+    }
+
+    VENDEDORES {
+        int id_vendedor PK
+        varchar nome_loja
+        varchar email UK
+        varchar documento_ficticio
+        timestamp data_cadastro
+    }
+
+    PRODUTOS {
+        int id_produto PK
+        int id_vendedor FK
+        varchar nome
+        text descricao
+        numeric preco
+        boolean ativo
+    }
+
+    CATEGORIAS {
+        int id_categoria PK
+        int id_categoria_pai FK
+        varchar nome
+        text descricao
+    }
+
+    PRODUTO_CATEGORIA {
+        int id_produto PK,FK
+        int id_categoria PK,FK
+    }
+
+    PEDIDOS {
+        int id_pedido PK
+        int id_cliente FK
+        timestamp data_pedido
+        varchar status
+        numeric valor_total
+    }
+
+    ITENS_PEDIDO {
+        int id_item PK
+        int id_pedido FK
+        int id_produto FK
+        int quantidade
+        numeric preco_unitario
+    }
+
+    PAGAMENTOS {
+        int id_pagamento PK
+        int id_pedido FK
+        varchar metodo
+        varchar status
+        numeric valor
+        timestamp data_pagamento
+    }
+
+    PAGAMENTO_CARTAO {
+        int id_pagamento PK,FK
+        varchar bandeira
+        varchar ultimos_quatro_digitos
+        int parcelas
+    }
+
+    PAGAMENTO_PIX {
+        int id_pagamento PK,FK
+        varchar identificador_transacao
+        timestamp data_expiracao
+    }
+
+    ESTOQUE {
+        int id_estoque PK
+        int id_produto FK
+        int quantidade_disponivel
+        int quantidade_reservada
+        timestamp ultima_atualizacao
+    }
+
+    AVALIACOES {
+        int id_avaliacao PK
+        int id_cliente FK
+        int id_produto FK
+        int nota
+        text comentario
+        timestamp data_avaliacao
+    }
